@@ -1,27 +1,24 @@
 package com.example.dariuszn.lab3;
 
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.example.dariuszn.lab3.model.Phone;
-
-import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private SimpleCursorAdapter cursorAdapter;
@@ -44,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         callLoader();
 
-        initContextMenu();
+        initContextMenuMulitChoiceMode();
+        initContextMenuClickMode();
     }
 
     @Override
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         cursorAdapter.swapCursor(null);
     }
 
-    private void initContextMenu() {
+    private void initContextMenuMulitChoiceMode() {
         phonesView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         phonesView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
@@ -144,6 +142,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
     }
+
+    private void initContextMenuClickMode() {
+        phonesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, EditPhoneActivity.class);
+                intent.putExtra(Phone.ID, id);
+                startActivity(intent);
+            }
+        });
+    }
+
+
 
     private void deletedChoosenPhones() {
         long checked[] = phonesView.getCheckedItemIds();

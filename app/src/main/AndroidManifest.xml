@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dariuszn.lab3">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddPhoneActivity"></activity>
+        <activity android:name=".AddPhoneActivity" />
+
         <provider
-            android:authorities="com.exmaple.dariuszn.myprovider"
-            android:name=".MyProvider">
-        </provider>
+            android:name=".MyProvider"
+            android:authorities="com.exmaple.dariuszn.myprovider"></provider>
+
+        <activity android:name=".EditPhoneActivity"></activity>
     </application>
 
 </manifest>

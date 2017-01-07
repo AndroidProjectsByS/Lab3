@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.dariuszn.lab3.model.Phone;
+
 public class AddPhoneActivity extends AppCompatActivity {
 
-    private EditText poducentEditText;
+    private EditText producentEditText;
     private EditText modelEditText;
     private EditText wwwEditText;
     private EditText androidVersionEditText;
@@ -28,7 +30,7 @@ public class AddPhoneActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        poducentEditText = (EditText) findViewById(R.id.producent);
+        producentEditText = (EditText) findViewById(R.id.producent);
         modelEditText = (EditText) findViewById(R.id.model);
         wwwEditText = (EditText) findViewById(R.id.www);
         androidVersionEditText = (EditText) findViewById(R.id.androidVersion);
@@ -73,6 +75,11 @@ public class AddPhoneActivity extends AppCompatActivity {
 
     public void addPhoneToDatabase() {
         ContentValues values = new ContentValues();
+        values.put(Phone.ANDROID_VERSION_COLUMN, androidVersionEditText.getText().toString());
+        values.put(Phone.MODEL_COLUMMN, modelEditText.getText().toString());
+        values.put(Phone.PRODUCENT_COLUMN, producentEditText.getText().toString());
+        values.put(Phone.WWW_COLUMN, wwwEditText.getText().toString());
 
+        getContentResolver().insert(MyProvider.CONTENT_URI, values);
     }
 }

@@ -55,7 +55,7 @@ public class AddPhoneActivity extends AppCompatActivity {
     private void addListenerToCancelButton() {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+                public void onClick(View view) {
 
             }
         });

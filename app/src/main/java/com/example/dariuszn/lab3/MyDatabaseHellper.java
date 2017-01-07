@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyDatabaseHellper extends SQLiteOpenHelper {
     public final static int DATABASE_VERSION = 1;
     public final static String DATABASE_NAME = "PhoneDB";
+    public final static String TABLE_NAME = "phones";
 
     public MyDatabaseHellper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -18,7 +19,7 @@ public class MyDatabaseHellper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createEntriesSql = "CREATE TABLE phones (id INT primary key autoincrement," +
+        String createEntriesSql = "CREATE TABLE phones (_id INTEGER primary key autoincrement," +
                     "model VARCHAR(50) NOT NULL, " +
                     "android_version VARCHAR(5) NOT NULL, " +
                     "www VARCHAR(50) NOT NULL, " +
@@ -26,6 +27,8 @@ public class MyDatabaseHellper extends SQLiteOpenHelper {
                 ");";
 
         sqLiteDatabase.execSQL(createEntriesSql);
+
+
     }
 
     @Override

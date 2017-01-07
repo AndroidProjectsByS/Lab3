@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.dariuszn.lab3.model.Phone;
+
 /**
  * Created by DariuszN on 28.12.2016.
  */
@@ -19,11 +21,11 @@ public class MyDatabaseHellper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createEntriesSql = "CREATE TABLE phones (_id INTEGER primary key autoincrement," +
-                    "model VARCHAR(50) NOT NULL, " +
-                    "android_version VARCHAR(5) NOT NULL, " +
-                    "www VARCHAR(50) NOT NULL, " +
-                    "producent VARCHAR(50) NOT NULL " +
+        String createEntriesSql = "CREATE TABLE phones ("  + Phone.ID + " INTEGER primary key autoincrement," +
+                Phone.MODEL_COLUMMN + " model VARCHAR(50) NOT NULL, " +
+                Phone.ANDROID_VERSION_COLUMN + " VARCHAR(5) NOT NULL, " +
+                Phone.WWW_COLUMN + " VARCHAR(50) NOT NULL, " +
+                Phone.PRODUCENT_COLUMN + " producent VARCHAR(50) NOT NULL " +
                 ");";
 
         sqLiteDatabase.execSQL(createEntriesSql);

@@ -2,6 +2,7 @@ package com.example.dariuszn.lab3;
 
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,12 +10,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import com.example.dariuszn.lab3.model.Phone;
 
 import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        db.execSQL(sqlQuery);
 
         callLoader();
+
+        initContextMenu();
     }
 
     @Override
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        String[] projekcja = {"_id", "producent", "model"};
+        String[] projekcja = {Phone.ID, Phone.PRODUCENT_COLUMN, Phone.MODEL_COLUMMN};
         CursorLoader cursorLoader = new CursorLoader(this, MyProvider.CONTENT_URI, projekcja, null, null, null);
         return cursorLoader;
     }
@@ -96,5 +103,52 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
+    }
+
+    private void initContextMenu() {
+        phonesView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        phonesView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                MenuInflater menuInflater = actionMode.getMenuInflater();
+                menuInflater.inflate(R.menu.context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+                    case R.id.action_delete_phones:
+                        //Toast.makeText(MainActivity.this, "Wybrano opcje", Toast.LENGTH_SHORT).show();
+                        deletedChoosenPhones();
+                        break;
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+
+            }
+        });
+    }
+
+    private void deletedChoosenPhones() {
+        long checked[] = phonesView.getCheckedItemIds();
+        for (int i = 0; i < checked.length; i++) {
+            getContentResolver().delete(ContentUris.withAppendedId(MyProvider.CONTENT_URI, checked[i]), null, null);
+        }
     }
 }

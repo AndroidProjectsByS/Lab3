@@ -1,5 +1,6 @@
 package com.example.dariuszn.lab3;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -65,8 +66,13 @@ public class AddPhoneActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                addPhoneToDatabase();
             }
         });
+    }
+
+    public void addPhoneToDatabase() {
+        ContentValues values = new ContentValues();
+
     }
 }

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/row_background">
 
         <TextView
             android:id="@+id/producent_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/model"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:layout_weight="1"
             />
 

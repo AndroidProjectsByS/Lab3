@@ -2,7 +2,9 @@ package com.example.dariuszn.lab3;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -59,7 +61,10 @@ public class EditPhoneActivity extends AppCompatActivity {
         wwwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (wwwEditText.getText().toString().startsWith("http://")) {
+                    Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(wwwEditText.getText().toString()));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -68,7 +73,7 @@ public class EditPhoneActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                goToMainActivity();
             }
         });
     }
@@ -83,13 +88,41 @@ public class EditPhoneActivity extends AppCompatActivity {
     }
 
     public void updatePhoneInDatabase() {
-        ContentValues values = new ContentValues();
-        values.put(Phone.ANDROID_VERSION_COLUMN, androidVersionEditText.getText().toString());
-        values.put(Phone.MODEL_COLUMMN, modelEditText.getText().toString());
-        values.put(Phone.PRODUCENT_COLUMN, producentEditText.getText().toString());
-        values.put(Phone.WWW_COLUMN, wwwEditText.getText().toString());
+        boolean isEditTextCorrect = checkCorrectionOfEditTexts();
+        if (isEditTextCorrect) {
+            ContentValues values = new ContentValues();
+            values.put(Phone.ANDROID_VERSION_COLUMN, androidVersionEditText.getText().toString());
+            values.put(Phone.MODEL_COLUMMN, modelEditText.getText().toString());
+            values.put(Phone.PRODUCENT_COLUMN, producentEditText.getText().toString());
+            values.put(Phone.WWW_COLUMN, wwwEditText.getText().toString());
 
-        getContentResolver().update(ContentUris.withAppendedId(MyProvider.CONTENT_URI,phoneId), values, null, null);
+            getContentResolver().update(ContentUris.withAppendedId(MyProvider.CONTENT_URI,phoneId), values, null, null);
+
+            goToMainActivity();
+        }
+    }
+
+    private boolean checkCorrectionOfEditTexts() {
+        boolean isCorrect = true;
+
+        if (producentEditText.getText().toString().trim().equals("")) {
+            isCorrect = false;
+            producentEditText.setError("Pole zawiera nie poprawną wartość.");
+        }
+        else if (modelEditText.getText().toString().trim().equals("")) {
+            isCorrect = false;
+            modelEditText.setError("Pole zawiera nie poprawną wartość.");
+        }
+        else if (!wwwEditText.getText().toString().startsWith("http://")) {
+            isCorrect = false;
+            wwwEditText.setError("Pole zawiera nie poprawną wartość.");
+        }
+        else if (androidVersionEditText.getText().toString().matches("^[a-zA-z]+$")) {
+            isCorrect = false;
+            androidVersionEditText.setError("Pole zawiera nie poprawną wartość.");
+        }
+
+        return isCorrect;
     }
 
     private void fillComponents() {
@@ -113,5 +146,10 @@ public class EditPhoneActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void goToMainActivity() {
+        Intent intent = new Intent(EditPhoneActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -17,12 +17,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.example.dariuszn.lab3.model.Phone;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private SimpleCursorAdapter cursorAdapter;
     private ListView phonesView;
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         phonesView = (ListView) findViewById(R.id.phones_list);
+        emptyView = (TextView) findViewById(R.id.empty);
 
 //        MyDatabaseHellper helper = new MyDatabaseHellper(this);
 //        SQLiteDatabase db = helper.getWritableDatabase();
@@ -40,10 +43,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        db.execSQL(sqlQuery);
 
         callLoader();
-
         initContextMenuMulitChoiceMode();
         initContextMenuClickMode();
+
+        changeVisiblityOfEmptyView();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -160,6 +165,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         long checked[] = phonesView.getCheckedItemIds();
         for (int i = 0; i < checked.length; i++) {
             getContentResolver().delete(ContentUris.withAppendedId(MyProvider.CONTENT_URI, checked[i]), null, null);
+        }
+
+        changeVisiblityOfEmptyView();
+    }
+
+    private void changeVisiblityOfEmptyView() {
+
+        if (phonesView.getAdapter().getCount() == 0) {
+            emptyView.setVisibility(View.INVISIBLE);
+        }
+        else {
+            emptyView.setVisibility(View.VISIBLE);
         }
     }
 }

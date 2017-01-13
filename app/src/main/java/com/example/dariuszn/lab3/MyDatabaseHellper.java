@@ -30,7 +30,6 @@ public class MyDatabaseHellper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(createEntriesSql);
 
-
     }
 
     @Override

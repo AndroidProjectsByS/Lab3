@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -18,8 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
 import com.example.dariuszn.lab3.model.Phone;
+import com.example.dariuszn.lab3.test.Putter;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private SimpleCursorAdapter cursorAdapter;
@@ -33,20 +34,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         phonesView = (ListView) findViewById(R.id.phones_list);
         emptyView = (TextView) findViewById(R.id.empty);
+        phonesView.setEmptyView(emptyView);
 
-//        MyDatabaseHellper helper = new MyDatabaseHellper(this);
-//        SQLiteDatabase db = helper.getWritableDatabase();
+        //Putter.putToDabatabse(this);
 
-//        String sqlQuery = "INSERT INTO phones ('model', 'android_version', 'www', 'producent'" +
-//                ") VALUES ('Samasung galaxy s2', '4', 'www', 'Samsung')";
-//
-//        db.execSQL(sqlQuery);
 
         callLoader();
         initContextMenuMulitChoiceMode();
         initContextMenuClickMode();
-
-        changeVisiblityOfEmptyView();
     }
 
 
@@ -159,24 +154,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
     }
 
-
-
     private void deletedChoosenPhones() {
         long checked[] = phonesView.getCheckedItemIds();
         for (int i = 0; i < checked.length; i++) {
             getContentResolver().delete(ContentUris.withAppendedId(MyProvider.CONTENT_URI, checked[i]), null, null);
-        }
-
-        changeVisiblityOfEmptyView();
-    }
-
-    private void changeVisiblityOfEmptyView() {
-
-        if (phonesView.getAdapter().getCount() == 0) {
-            emptyView.setVisibility(View.INVISIBLE);
-        }
-        else {
-            emptyView.setVisibility(View.VISIBLE);
         }
     }
 }

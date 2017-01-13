@@ -114,7 +114,7 @@ public class AddPhoneActivity extends AppCompatActivity {
             isCorrect = false;
             wwwEditText.setError("Pole zawiera nie poprawną wartość.");
         }
-        else if (androidVersionEditText.getText().toString().matches("^[a-zA-z]+$")) {
+        else if (androidVersionEditText.getText().toString().matches("^.*[a-zA-z]+.*$")) {
             isCorrect = false;
             androidVersionEditText.setError("Pole zawiera nie poprawną wartość.");
         }
